@@ -218,10 +218,21 @@ namespace HumaneSociety
             //How to do it without adding until all search criteria are checked? I could do it, but it would add any qualifiers, then add more qualifiers, not check all at once
             //A bunch of && statements? 8 of them?
 
-            //Will make sure to add key and value to the dictionary each time until they hit 9. I don't have to worry about that
+            //Might be good to use switch statement to take whatever their choices are in the dictionary
+            List<int> keyList = new List<int>(updates.Keys);
+            //Seems like there's a better way to do this. Check if you have time
+            
+            foreach (int key in keyList)
+            {
+                switch (key)
+                {
+                    case 1:
 
-            var traitsData = db.Animals.Where(a => a.Category.Equals(1));
-            //Seems like it turns 'dog' string into '1'. Seems weird, but maybe I just need to work with that
+                        break;
+                }
+            }
+
+            var traitsData = db.Animals.Where(a => a.CategoryId.Equals(1));
             return traitsData;
 
             //Right now it returns all animals in db. Need to use this function to narrow down by only the ones they've selected
