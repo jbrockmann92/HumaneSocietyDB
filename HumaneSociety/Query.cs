@@ -215,12 +215,20 @@ namespace HumaneSociety
         {
             //Dictionary values are each of the numbers they've chosen and the values they entered. Need to choose by each of the 8 options, check for the value they put in,
             //and see if it matches any or multiple animals, then return any and all animals who match the search criteria
-            var traitsData = db.Animals.Where(a => a);
+            //How to do it without adding until all search criteria are checked? I could do it, but it would add any qualifiers, then add more qualifiers, not check all at once
+            //A bunch of && statements? 8 of them?
+
+            //Will make sure to add key and value to the dictionary each time until they hit 9. I don't have to worry about that
+
+            var traitsData = db.Animals.Where(a => a.Category.Equals(1));
+            //Seems like it turns 'dog' string into '1'. Seems weird, but maybe I just need to work with that
             return traitsData;
 
             //Right now it returns all animals in db. Need to use this function to narrow down by only the ones they've selected
             //Need here to be able to search by name and type, or name and id, etc. Want a list or something? How to choose from all the possibilities? 72 of them
             //This is the data I need I think. Each possibility has a number assigned
+
+            //"1. Category", "2. Name", "3. Age", "4. Demeanor", "5. Kid friendly", "6. Pet friendly", "7. Weight", "8. ID", "9. Finished" 
 
             //case "1":
             //        searchParameters.Add(1, GetStringData("category", "the animal's"));
@@ -250,7 +258,7 @@ namespace HumaneSociety
             //        DisplayUserOptions("Input not recognized please try agian");
             //break;
         }
-         
+
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
