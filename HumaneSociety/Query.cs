@@ -211,7 +211,7 @@ namespace HumaneSociety
         }
         
         // TODO: Animal Multi-Trait Search
-        internal static List<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
+        internal static IEnumerable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
             //Proabably not allowed to do this. Changed the return type here from IQueryable<Animal> to List<Animal> because, in all three places it's used, it's converted immediately to a list.
 
@@ -222,13 +222,10 @@ namespace HumaneSociety
                 switch (pair.Key)
                 {
                     case 1:
-                        matchingAnimals.RemoveAll(a => a.Category.ToString() != pair.Value);
-                        //Want it to be not equal. Probably need to do some kind of conversion or something.
-                        //Doesn't quite work because it's testing each one against all of the values. I only want the values at 1, which is what they chose in this case
+                        matchingAnimals.RemoveAll(a => a.Category.Name != pair.Value);
                         break;
                     case 2:
                         matchingAnimals.RemoveAll(a => a.Name.ToString() != pair.Value);
-                        //Don't want where. I want a function to remove the items I don't want, that way I can use the same variable each time, and it will narrow as it moves down the list
                         break;
                     case 3:
                         matchingAnimals.RemoveAll(a => a.Age.ToString() != pair.Value);
@@ -273,8 +270,6 @@ namespace HumaneSociety
         {
             var planID = db.DietPlans.Where(d => d.Name.Equals(dietPlanName)).FirstOrDefault();
             return planID.DietPlanId;
-            //I don't think this is right
-
         }
 
         // TODO: Adoption CRUD Operations
