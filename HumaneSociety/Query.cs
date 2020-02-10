@@ -221,13 +221,37 @@ namespace HumaneSociety
             //Might be good to use switch statement to take whatever their choices are in the dictionary
             List<int> keyList = new List<int>(updates.Keys);
             //Seems like there's a better way to do this. Check if you have time
-            
+
             foreach (int key in keyList)
             {
                 switch (key)
                 {
                     case 1:
-
+                        var matchingAnimals = db.Animals.Select(a => a.Category.Equals(updates.Values));
+                            //Where(a => a.Category.Equals(updates.Values));
+                        //Doesn't quite work because it's testing each one against all of the values. I only want the values at 1, which is what they chose in this case
+                        break;
+                    case 2:
+                        matchingAnimals = db.Animals.Select(a => a.Name.Equals(updates.Values));
+                        //Don't want where. I want a function to remove the items I don't want, that way I can use the same variable each time, and it will narrow as it moves down the list
+                        break;
+                    case 3:
+                        matchingAnimals = db.Animals.Select(a => a.Age.Equals(updates.Values));
+                        break;
+                    case 4:
+                        matchingAnimals = db.Animals.Select(a => a.Demeanor.Equals(updates.Values));
+                        break;
+                    case 5:
+                        matchingAnimals = db.Animals.Select(a => a.KidFriendly.Equals(updates.Values));
+                        break;
+                    case 6:
+                        matchingAnimals = db.Animals.Select(a => a.PetFriendly.Equals(updates.Values));
+                        break;
+                    case 7:
+                        matchingAnimals = db.Animals.Select(a => a.Weight.Equals(updates.Values));
+                        break;
+                    case 8:
+                        matchingAnimals = db.Animals.Select(a => a.AnimalId.Equals(updates.Values));
                         break;
                 }
             }
