@@ -186,9 +186,7 @@ namespace HumaneSociety
                     db.Employees.DeleteOnSubmit(empDelete[0]);
                     //Again, probably wrong, but works
                     break;
-                    
             }
-            db.Employees.InsertOnSubmit(employee);
         }
 
         // TODO: Animal CRUD Operations
@@ -215,7 +213,42 @@ namespace HumaneSociety
         // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-            //var data = db.Animals.Where(a => a.Demeanor == "Aloof");
+            //Dictionary values are each of the numbers they've chosen and the values they entered. Need to choose by each of the 8 options, check for the value they put in,
+            //and see if it matches any or multiple animals, then return any and all animals who match the search criteria
+            var traitsData = db.Animals.Where(a => a);
+            return traitsData;
+
+            //Right now it returns all animals in db. Need to use this function to narrow down by only the ones they've selected
+            //Need here to be able to search by name and type, or name and id, etc. Want a list or something? How to choose from all the possibilities? 72 of them
+            //This is the data I need I think. Each possibility has a number assigned
+
+            //case "1":
+            //        searchParameters.Add(1, GetStringData("category", "the animal's"));
+            //break;
+            //    case "2":
+            //        searchParameters.Add(2, GetStringData("name", "the animal's"));
+            //break;
+            //    case "3":
+            //        searchParameters.Add(3, GetIntegerData("age", "the animal's").ToString());
+            //break;
+            //    case "4":
+            //        searchParameters.Add(4, GetStringData("demeanor", "the animal's"));
+            //break;
+            //    case "5":
+            //        searchParameters.Add(5, GetBitData("the animal", "kid friendly").ToString());
+            //break;
+            //    case "6":
+            //        searchParameters.Add(6, GetBitData("the animal", "pet friendly").ToString());
+            //break;
+            //    case "7":
+            //        searchParameters.Add(7, GetIntegerData("weight", "the animal's").ToString());
+            //break;
+            //    case "8":
+            //        searchParameters.Add(8, GetIntegerData("ID", "the animal's").ToString());
+            //break;
+            //default:
+            //        DisplayUserOptions("Input not recognized please try agian");
+            //break;
         }
          
         // TODO: Misc Animal Things

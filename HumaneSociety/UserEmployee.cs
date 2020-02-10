@@ -100,7 +100,7 @@ namespace HumaneSociety
             var updates = UserInterface.GetAnimalSearchCriteria();
             var animals = Query.SearchForAnimalsByMultipleTraits(updates).ToList();
             
-            if(animals.Count > 1)
+            if(animals.Count > 1) //Should be >= shouldn't it? This if statement leaves out '1'
             {
                 UserInterface.DisplayUserOptions("Several animals found");
                 UserInterface.DisplayAnimals(animals);
