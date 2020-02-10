@@ -166,7 +166,26 @@ namespace HumaneSociety
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-            throw new NotImplementedException();
+            crudOperation = crudOperation.ToLower();
+            //Need switch statement for all four CRUD operations
+            switch(crudOperation)
+            {
+                case "create":
+                    db.Employees.InsertOnSubmit(employee);
+                    break;
+                case "read":
+                    db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber); //Is that right? Seems like it will work
+                    break;
+                case "update":
+                    db.Employees.
+                        //Need to grab the employee, then run admin.UpdateEmployee, then submit again?
+                case "delete":
+                    db.Employees.Select(e => e.EmployeeNumber == employee.EmployeeNumber);
+                    //Still need to actually remove item from the db. Might actually be a pretty different operation here. We'll see
+                    break;
+                    
+            }
+            db.Employees.InsertOnSubmit(employee);
         }
 
         // TODO: Animal CRUD Operations
@@ -193,7 +212,7 @@ namespace HumaneSociety
         // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-            throw new NotImplementedException();
+            //var data = db.Animals.Where(a => a.Demeanor == "Aloof");
         }
          
         // TODO: Misc Animal Things
