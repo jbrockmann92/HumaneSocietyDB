@@ -173,18 +173,18 @@ namespace HumaneSociety
                 case "create":
                     db.Employees.InsertOnSubmit(employee);
                     break;
-                case "read":
-                    db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber);
+                case "remove":
+                    List<Employee> empRemove = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).ToList();
+                    db.Employees.DeleteOnSubmit(empRemove[0]);
+                    //Again, probably wrong, but works
                     break;
                 case "update":
                     List<Employee> empUpdate = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).ToList();
                     db.Employees.InsertOnSubmit(empUpdate[0]);
                     //Without question, not the right way to do this. But it seems to work.
                     break;
-                case "delete":
-                    List<Employee> empDelete = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).ToList();
-                    db.Employees.DeleteOnSubmit(empDelete[0]);
-                    //Again, probably wrong, but works
+                case "display":
+                    db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber);
                     break;
             }
         }
@@ -211,16 +211,10 @@ namespace HumaneSociety
         }
         
         // TODO: Animal Multi-Trait Search
-        internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
+        internal static List<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-            //Dictionary values are each of the numbers they've chosen and the values they entered. Need to choose by each of the 8 options, check for the value they put in,
-            //and see if it matches any or multiple animals, then return any and all animals who match the search criteria
-            //How to do it without adding until all search criteria are checked? I could do it, but it would add any qualifiers, then add more qualifiers, not check all at once
-            //A bunch of && statements? 8 of them?
+            //Proabably not allowed to do this. Changed the return type here from IQueryable<Animal> to List<Animal> because, in all three places it's used, it's converted immediately to a list.
 
-            //Might be good to use switch statement to take whatever their choices are in the dictionary
-            List<int> keyList = new List<int>(updates.Keys);
-            //Seems like there's a better way to do this. Check if you have time
             var matchingAnimals = db.Animals.ToList();
 
             foreach (KeyValuePair<int, string> pair in updates)
@@ -257,46 +251,15 @@ namespace HumaneSociety
                 }
             }
             return matchingAnimals;
-
-            //Right now it returns all animals in db. Need to use this function to narrow down by only the ones they've selected
-            //Need here to be able to search by name and type, or name and id, etc. Want a list or something? How to choose from all the possibilities? 72 of them
-            //This is the data I need I think. Each possibility has a number assigned
-
-            //"1. Category", "2. Name", "3. Age", "4. Demeanor", "5. Kid friendly", "6. Pet friendly", "7. Weight", "8. ID", "9. Finished" 
-
-            //case "1":
-            //        searchParameters.Add(1, GetStringData("category", "the animal's"));
-            //break;
-            //    case "2":
-            //        searchParameters.Add(2, GetStringData("name", "the animal's"));
-            //break;
-            //    case "3":
-            //        searchParameters.Add(3, GetIntegerData("age", "the animal's").ToString());
-            //break;
-            //    case "4":
-            //        searchParameters.Add(4, GetStringData("demeanor", "the animal's"));
-            //break;
-            //    case "5":
-            //        searchParameters.Add(5, GetBitData("the animal", "kid friendly").ToString());
-            //break;
-            //    case "6":
-            //        searchParameters.Add(6, GetBitData("the animal", "pet friendly").ToString());
-            //break;
-            //    case "7":
-            //        searchParameters.Add(7, GetIntegerData("weight", "the animal's").ToString());
-            //break;
-            //    case "8":
-            //        searchParameters.Add(8, GetIntegerData("ID", "the animal's").ToString());
-            //break;
-            //default:
-            //        DisplayUserOptions("Input not recognized please try agian");
-            //break;
         }
 
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
-            throw new NotImplementedException();
+            //Need to take in the categoryName and return the categoryId. Test the name against the category, and return the categoryId
+            string stringId = db.Animals.Where(a => a.Category.Equals(categoryName)).ToString();
+            int categoryId = int.Parse(stringId);
+            return categoryId;
         }
         
         internal static Room GetRoom(int animalId)
