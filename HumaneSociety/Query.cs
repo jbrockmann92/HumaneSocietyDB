@@ -221,43 +221,42 @@ namespace HumaneSociety
             //Might be good to use switch statement to take whatever their choices are in the dictionary
             List<int> keyList = new List<int>(updates.Keys);
             //Seems like there's a better way to do this. Check if you have time
+            var matchingAnimals = db.Animals.ToList();
 
-            foreach (int key in keyList)
+            foreach (KeyValuePair<int, string> pair in updates)
             {
-                switch (key)
+                switch (pair.Key)
                 {
                     case 1:
-                        var matchingAnimals = db.Animals.Select(a => a.Category.Equals(updates.Values));
-                            //Where(a => a.Category.Equals(updates.Values));
+                        matchingAnimals.RemoveAll(a => a.Category.ToString() != pair.Value);
+                        //Want it to be not equal. Probably need to do some kind of conversion or something.
                         //Doesn't quite work because it's testing each one against all of the values. I only want the values at 1, which is what they chose in this case
                         break;
                     case 2:
-                        matchingAnimals = db.Animals.Select(a => a.Name.Equals(updates.Values));
+                        matchingAnimals.RemoveAll(a => a.Name.ToString() != pair.Value);
                         //Don't want where. I want a function to remove the items I don't want, that way I can use the same variable each time, and it will narrow as it moves down the list
                         break;
                     case 3:
-                        matchingAnimals = db.Animals.Select(a => a.Age.Equals(updates.Values));
+                        matchingAnimals.RemoveAll(a => a.Age.ToString() != pair.Value);
                         break;
                     case 4:
-                        matchingAnimals = db.Animals.Select(a => a.Demeanor.Equals(updates.Values));
+                        matchingAnimals.RemoveAll(a => a.Demeanor.ToString() != pair.Value);
                         break;
                     case 5:
-                        matchingAnimals = db.Animals.Select(a => a.KidFriendly.Equals(updates.Values));
+                        matchingAnimals.RemoveAll(a => a.KidFriendly.ToString() != pair.Value);
                         break;
                     case 6:
-                        matchingAnimals = db.Animals.Select(a => a.PetFriendly.Equals(updates.Values));
+                        matchingAnimals.RemoveAll(a => a.PetFriendly.ToString() != pair.Value);
                         break;
                     case 7:
-                        matchingAnimals = db.Animals.Select(a => a.Weight.Equals(updates.Values));
+                        matchingAnimals.RemoveAll(a => a.Weight.ToString() != pair.Value);
                         break;
                     case 8:
-                        matchingAnimals = db.Animals.Select(a => a.AnimalId.Equals(updates.Values));
+                        matchingAnimals.RemoveAll(a => a.AnimalId.ToString() != pair.Value);
                         break;
                 }
             }
-
-            var traitsData = db.Animals.Where(a => a.CategoryId.Equals(1));
-            return traitsData;
+            return matchingAnimals;
 
             //Right now it returns all animals in db. Need to use this function to narrow down by only the ones they've selected
             //Need here to be able to search by name and type, or name and id, etc. Want a list or something? How to choose from all the possibilities? 72 of them
