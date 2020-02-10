@@ -174,14 +174,17 @@ namespace HumaneSociety
                     db.Employees.InsertOnSubmit(employee);
                     break;
                 case "read":
-                    db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber); //Is that right? Seems like it will work
+                    db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber);
                     break;
                 case "update":
-                    db.Employees.
-                        //Need to grab the employee, then run admin.UpdateEmployee, then submit again?
+                    List<Employee> empUpdate = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).ToList();
+                    db.Employees.InsertOnSubmit(empUpdate[0]);
+                    //Without question, not the right way to do this. But it seems to work.
+                    break;
                 case "delete":
-                    db.Employees.Select(e => e.EmployeeNumber == employee.EmployeeNumber);
-                    //Still need to actually remove item from the db. Might actually be a pretty different operation here. We'll see
+                    List<Employee> empDelete = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).ToList();
+                    db.Employees.DeleteOnSubmit(empDelete[0]);
+                    //Again, probably wrong, but works
                     break;
                     
             }
