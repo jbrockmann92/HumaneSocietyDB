@@ -279,13 +279,13 @@ namespace HumaneSociety
             //JOIN Animal and Client on Adoption table, check to make sure variables match, then approve?
             //Remove animal from table
 
+            Adoption adoption = new Adoption();
+            adoption.ClientId = client.ClientId;
+            adoption.AnimalId = animal.AnimalId;
+            adoption.ApprovalStatus = "Not Adopted";
+            adoption.AdoptionFee = 100;
+            adoption.PaymentCollected = false;
 
-
-            //IEnumerable<string> query = from employee in employees
-            //                            join student in students
-            //                            on new { employee.FirstName, employee.LastName }
-            //                            equals new { student.FirstName, student.LastName }
-            //                            select employee.FirstName + " " + employee.LastName;
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
