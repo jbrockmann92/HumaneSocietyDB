@@ -14,16 +14,12 @@ namespace HumaneSociety
 
         public List<Animal> LoadCSV()
         {
-            List<string> tempPlaceholder = new List<string>() { "Hank,50,5,Playful,1,1,Male,Not Adopted,1,4,2", "Lady,14,3,Funny,1,0,Female,Not Adopted,2,1,4" };
-            List<List<string>> listOfLists = new List<List<string>>();
-            List<Animal> animalList;
+            List<string> tempPlaceholder = new List<string>() {System.IO.File.ReadAllText(@"C:\Users\Public\TestFolder\WriteText.txt")};
+            List<Animal> animalList = new List<Animal>();
 
             var listOfListsFromCSV = tempPlaceholder.Select(s => s.Split(',').Select(Convert.ToString).ToList().ToList()).ToList();
-            //Three ToLists in a row. Not bad
-            //Maybe want something in this class that will convert each item based on what it contains??? Not ideal, but not sure besides that
-            //Make a list of some class that 3 classes inherit from? bool, int, string all custom? Not ideal
 
-            foreach (List<string> list in listOfLists)
+            foreach (List<string> list in listOfListsFromCSV)
             {
                 Animal animal = new Animal();
                 for (int i = 0; i < list.Count; i++)
@@ -38,41 +34,36 @@ namespace HumaneSociety
                             animal.Weight = Convert.ToInt32(list[i]);
                             break;
                         case 2:
-                            animal.Name = list[i].ToString();
+                            animal.Age = Convert.ToInt32(list[i]);
                             break;
                         case 3:
-                            animal.Name = list[i].ToString();
+                            animal.Demeanor = list[i].ToString();
                             break;
                         case 4:
-                            animal.Name = list[i].ToString();
+                            animal.KidFriendly = Convert.ToBoolean(list[i]);
                             break;
                         case 5:
-                            animal.Name = list[i].ToString();
+                            animal.PetFriendly = Convert.ToBoolean(list[i]);
                             break;
                         case 6:
-                            animal.Name = list[i].ToString();
+                            animal.Gender = list[i].ToString();
                             break;
                         case 7:
-                            animal.Name = list[i].ToString();
+                            animal.AdoptionStatus = list[i].ToString();
                             break;
                         case 8:
-                            animal.Name = list[i].ToString();
+                            animal.CategoryId = Convert.ToInt32(list[i]);
                             break;
                         case 9:
-                            animal.Name = list[i].ToString();
+                            animal.DietPlanId = Convert.ToInt32(list[i]);
                             break;
                         case 10:
-                            animal.Name = list[i].ToString();
-                            break;
-                        case 11:
-                            animal.Name = list[i].ToString();
+                            animal.EmployeeId = Convert.ToInt32(list[i]);
                             break;
                     }
                 }
-                        
-                
+                animalList.Add(animal);       
             }
-
             return animalList;
         }
     }

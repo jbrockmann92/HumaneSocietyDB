@@ -183,7 +183,6 @@ namespace HumaneSociety
                     Employee empUpdate = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).FirstOrDefault();
                     db.Employees.InsertOnSubmit(empUpdate);
                     db.SubmitChanges();
-
                     break;
                 case "display":
                     db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber);
@@ -340,27 +339,16 @@ namespace HumaneSociety
             //Is this necessary after .Add()?
         }
 
-        internal static void AddAnimalsFromCSVFile(List<List<string>> csvStrings)//Needs to take in the CSV file here probably
+        internal static void AddAnimalsFromCSVFile()//Needs to take in the CSV file here probably
         {
             CSVOpener opener = new CSVOpener();
-
-
-            //Want to take a csv file that contains animal info and import all of their info into the program. Strightforward in theory
-            //Need to import file, then assign each of the items, by commas, to variables of the animal, then add the animal to the db
-            //Animal animal = new Animal();
-            //animal.Name;
-            //animal.Weight;
-            //animal.Age;
-            //animal.Demeanor;
-            //animal.KidFriendly;
-            //animal.PetFriendly;
-            //animal.Gender;
-            //animal.AdoptionStatus;
-            //animal.CategoryId;
-            //animal.DietPlanId;
-            //animal.EmployeeId;
-
-
+            List<Animal> animalList = opener.LoadCSV();
+            foreach (Animal animal in animalList)
+            {
+                db.Animals.InsertOnSubmit(animal);
+                db.SubmitChanges();
+            }
+            //Might want to take in a csv file or something in the constructor??
         }
     }
 }
