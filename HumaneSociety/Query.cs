@@ -193,22 +193,23 @@ namespace HumaneSociety
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-            throw new NotImplementedException();
+            db.Animals.InsertOnSubmit(animal);
         }
 
         internal static Animal GetAnimalByID(int id)
         {
-            throw new NotImplementedException();
+            db.Animals.Select(a => a.AnimalId == animal.AnimalId);
+            return Animal;
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
-        {            
-            throw new NotImplementedException();
+        {
+            db.Animals.InsertOnSubmit(db.Animals.Where(a => a.AnimalId == animal.AnimalId).ToList());
         }
 
         internal static void RemoveAnimal(Animal animal)
         {
-            throw new NotImplementedException();
+            db.Animals.DeleteOnSubmit(animal);
         }
         
         // TODO: Animal Multi-Trait Search
