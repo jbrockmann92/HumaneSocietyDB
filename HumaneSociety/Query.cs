@@ -199,17 +199,19 @@ namespace HumaneSociety
         internal static Animal GetAnimalByID(int id)
         {
             db.Animals.Select(a => a.AnimalId == animal.AnimalId);
-            return Animal;
+            return Animal.animalId;
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
-            db.Animals.InsertOnSubmit(db.Animals.Where(a => a.AnimalId == animal.AnimalId).ToList());
+            List<Animal> animalUpdate = db.Animals.Where(a => a.AnimalId == animal.AnimalId).ToList();
+            db.Animals.DeleteOnSubmit(animalUpdate[0]);
         }
 
         internal static void RemoveAnimal(Animal animal)
         {
-            db.Animals.DeleteOnSubmit(animal);
+            List<Animal> animalRemove = db.Animals.Where(e => e.AnimalId == animal.AnimalId).ToList();
+            db.Animals.DeleteOnSubmit(animalRemove[0]);
         }
         
         // TODO: Animal Multi-Trait Search
