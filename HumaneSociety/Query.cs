@@ -198,13 +198,13 @@ namespace HumaneSociety
 
         internal static Animal GetAnimalByID(int id)
         {
-            db.Animals.Select(a => a.AnimalId == animal.AnimalId);
-            return Animal.animalId;
+            var retrieveAnimal = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();                 
+            return retrieveAnimal;   
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
-            List<Animal> animalUpdate = db.Animals.Where(a => a.AnimalId == animal.AnimalId).ToList();
+            List<Animal> animalUpdate = db.Animals.Where(a => a.AnimalId == animalId).ToList();
             db.Animals.DeleteOnSubmit(animalUpdate[0]);
         }
 
