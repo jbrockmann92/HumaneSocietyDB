@@ -171,14 +171,17 @@ namespace HumaneSociety
             {
                 case "create":
                     db.Employees.InsertOnSubmit(employee);
+                    db.SubmitChanges();
                     break;
                 case "remove":
                     Employee empRemove = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).FirstOrDefault();
                     db.Employees.DeleteOnSubmit(empRemove);
+                    db.SubmitChanges();
                     break;
                 case "update":
                     Employee empUpdate = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).FirstOrDefault();
                     db.Employees.InsertOnSubmit(empUpdate);
+                    db.SubmitChanges();
 
                     break;
                 case "display":
@@ -191,6 +194,7 @@ namespace HumaneSociety
         internal static void AddAnimal(Animal animal)
         {
             db.Animals.InsertOnSubmit(animal);
+            db.SubmitChanges();
         }
 
         internal static Animal GetAnimalByID(int id)
@@ -203,12 +207,14 @@ namespace HumaneSociety
         {
             List<Animal> animalUpdate = db.Animals.Where(a => a.AnimalId == animalId).ToList();
             db.Animals.DeleteOnSubmit(animalUpdate[0]);
+            db.SubmitChanges();
         }
 
         internal static void RemoveAnimal(Animal animal)
         {
             List<Animal> animalRemove = db.Animals.Where(e => e.AnimalId == animal.AnimalId).ToList();
             db.Animals.DeleteOnSubmit(animalRemove[0]);
+            db.SubmitChanges();
         }
         
         // TODO: Animal Multi-Trait Search
@@ -280,6 +286,7 @@ namespace HumaneSociety
             adoption.AdoptionFee = 100;
             adoption.PaymentCollected = false;
             db.Adoptions.InsertOnSubmit(adoption);
+            db.SubmitChanges();
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
@@ -309,6 +316,7 @@ namespace HumaneSociety
             Adoption adoption = new Adoption();
             var adoptionToDelete = db.Adoptions.Where(a => a.AnimalId == animalId && a.ClientId == clientId).FirstOrDefault();
             db.Adoptions.DeleteOnSubmit(adoptionToDelete);
+            db.SubmitChanges();
         }
 
         // TODO: Shots Stuff
@@ -326,6 +334,8 @@ namespace HumaneSociety
             shot.DateReceived = DateTime.Now;
 
             animal.AnimalShots.Add(shot);
+            db.SubmitChanges();
+            //Is this necessary?
         }
     }
 }
