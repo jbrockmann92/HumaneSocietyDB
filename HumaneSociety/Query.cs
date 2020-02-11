@@ -195,6 +195,7 @@ namespace HumaneSociety
         {
             db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
+            //Currently doesn't get gender, adoptionstatus, and employeeid, as required on the table. Is there a way to add them here?
         }
 
         internal static Animal GetAnimalByID(int id)
@@ -307,7 +308,7 @@ namespace HumaneSociety
                         animal.AdoptionStatus = "Is adopted";
                     }
                 }
-                //Probably a better way to do this. Some kind of LINQ statement?
+                //A better way to do this? Some kind of LINQ statement?
             }
         }
 
@@ -335,7 +336,12 @@ namespace HumaneSociety
 
             animal.AnimalShots.Add(shot);
             db.SubmitChanges();
-            //Is this necessary?
+            //Is this necessary after .Add()?
+        }
+
+        internal static void AddAnimalsFromCSVFile()
+        {
+            //Want to take a csv file that contains animal info and import all of their info into the program. Strightforward in theory
         }
     }
 }
