@@ -312,8 +312,16 @@ namespace HumaneSociety
             {
                 //Need to update the client's adoption status, and maybe I don't want to remove the animal from the table, just update their adoption status, then change things to check 
                 //and make sure already adopted animals can't be adopted again?
-                db.Adoptions.DeleteOnSubmit(adoption);
-
+                var updateAdoptedAnimalAdoptionStatus = db.Adoptions.Select(a => a.AnimalId).FirstOrDefault();
+                //Update the animal which has animalId to show that it's been adopted
+                foreach (Animal animal in db.Animals)
+                {
+                    if (updateAdoptedAnimalAdoptionStatus == animal.AnimalId)
+                    {
+                        animal.AdoptionStatus = "Is adopted";
+                    }
+                }
+                //Probably a better way to do this. Some kind of LINQ statement?
             }
         }
 
