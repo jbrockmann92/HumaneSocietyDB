@@ -182,6 +182,7 @@ namespace HumaneSociety
                     List<Employee> empUpdate = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).ToList();
                     db.Employees.InsertOnSubmit(empUpdate[0]);
                     //Without question, not the right way to do this. But it seems to work.
+                    //FirstOrDefault() is what you want here
                     break;
                 case "display":
                     db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber);
@@ -213,8 +214,6 @@ namespace HumaneSociety
         // TODO: Animal Multi-Trait Search
         internal static IEnumerable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-            //Proabably not allowed to do this. Changed the return type here from IQueryable<Animal> to List<Animal> because, in all three places it's used, it's converted immediately to a list.
-
             var matchingAnimals = db.Animals.ToList();
 
             foreach (KeyValuePair<int, string> pair in updates)
@@ -254,9 +253,10 @@ namespace HumaneSociety
         internal static int GetCategoryId(string categoryName)
         {
             //Need to take in the categoryName and return the categoryId. Test the name against the category, and return the categoryId
-            string stringId = db.Animals.Where(a => a.Category.Equals(categoryName)).ToString();
+            string stringId = db.Animals.Where(a => a.Category.Name.Equals(categoryName)).ToString();
             int categoryId = int.Parse(stringId);
             return categoryId;
+            //Rewrite if time
         }
         
         internal static Room GetRoom(int animalId)
@@ -275,7 +275,17 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            throw new NotImplementedException();
+            //Want to change animal's status to adopted, but what about client? change their animals +1?
+            //JOIN Animal and Client on Adoption table, check to make sure variables match, then approve?
+            //Remove animal from table
+
+
+
+            //IEnumerable<string> query = from employee in employees
+            //                            join student in students
+            //                            on new { employee.FirstName, employee.LastName }
+            //                            equals new { student.FirstName, student.LastName }
+            //                            select employee.FirstName + " " + employee.LastName;
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()

@@ -217,7 +217,7 @@ namespace HumaneSociety
             return animals;
         }       
 
-        private void RemoveAnimal()
+        private void RemoveAnimal() //Useful to look at when removing from table in adoption method
         {
             var updates = UserInterface.GetAnimalSearchCriteria();
             var animals = Query.SearchForAnimalsByMultipleTraits(updates).ToList();
