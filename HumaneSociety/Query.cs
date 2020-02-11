@@ -167,22 +167,19 @@ namespace HumaneSociety
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
             crudOperation = crudOperation.ToLower();
-            //Need switch statement for all four CRUD operations
             switch(crudOperation)
             {
                 case "create":
                     db.Employees.InsertOnSubmit(employee);
                     break;
                 case "remove":
-                    List<Employee> empRemove = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).ToList();
-                    db.Employees.DeleteOnSubmit(empRemove[0]);
-                    //Again, probably wrong, but works
+                    Employee empRemove = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).FirstOrDefault();
+                    db.Employees.DeleteOnSubmit(empRemove);
                     break;
                 case "update":
-                    List<Employee> empUpdate = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).ToList();
-                    db.Employees.InsertOnSubmit(empUpdate[0]);
-                    //Without question, not the right way to do this. But it seems to work.
-                    //FirstOrDefault() is what you want here
+                    Employee empUpdate = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).FirstOrDefault();
+                    db.Employees.InsertOnSubmit(empUpdate);
+
                     break;
                 case "display":
                     db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber);
@@ -215,7 +212,7 @@ namespace HumaneSociety
         }
         
         // TODO: Animal Multi-Trait Search
-        internal static IEnumerable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
+        internal static IEnumerable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates)
         {
             var matchingAnimals = db.Animals.ToList();
 
@@ -255,10 +252,8 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
-            //Need to take in the categoryName and return the categoryId. Test the name against the category, and return the categoryId
-            string stringId = db.Animals.Where(a => a.Category.Name.Equals(categoryName)).ToString();
-            int categoryId = int.Parse(stringId);
-            return categoryId;
+            var animal = db.Animals.Where(a => a.Category.Name.Equals(categoryName)).FirstOrDefault();
+            return animal.CategoryId.GetValueOrDefault();
             //Rewrite if time
         }
         
@@ -278,10 +273,6 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            //Want to change animal's status to adopted, but what about client? change their animals +1?
-            //JOIN Animal and Client on Adoption table, check to make sure variables match, then approve?
-            //Remove animal from table
-
             Adoption adoption = new Adoption();
             adoption.ClientId = client.ClientId;
             adoption.AnimalId = animal.AnimalId;
@@ -289,31 +280,19 @@ namespace HumaneSociety
             adoption.AdoptionFee = 100;
             adoption.PaymentCollected = false;
             db.Adoptions.InsertOnSubmit(adoption);
-
-            //I don't think I need to finalize the adoption here. Just get it into pending, then can approve using UpdateAdoption?
-            //This way of doing things may mean the program can only handle one adoption at a time though..
-            //Get it working, then make it better
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
             var pendingAdoptions = db.Adoptions.Select(a => a);
             return pendingAdoptions;
-            //That should be all eh?
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
-            //Is this where I want to make sense of what I did in the Adopt method?
-            //Ask if they've paid the adoption fee, then change the animal's status to adopted and remove from the table?
-            //They've already decided it's good to go and what adoption they're talking about. Just need to update status for animal and remove from tables
-
             if (isAdopted)
             {
-                //Need to update the client's adoption status, and maybe I don't want to remove the animal from the table, just update their adoption status, then change things to check 
-                //and make sure already adopted animals can't be adopted again?
                 var updateAdoptedAnimalAdoptionStatus = db.Adoptions.Select(a => a.AnimalId).FirstOrDefault();
-                //Update the animal which has animalId to show that it's been adopted
                 foreach (Animal animal in db.Animals)
                 {
                     if (updateAdoptedAnimalAdoptionStatus == animal.AnimalId)
@@ -341,12 +320,10 @@ namespace HumaneSociety
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
-            //Take shot name, take animal. Update animal's shots based on shotName
             AnimalShot shot = new AnimalShot();
             shot.AnimalId = animal.AnimalId;
             shot.ShotId = db.Shots.Where(s => s.Name == shotName).FirstOrDefault().ShotId;
             shot.DateReceived = DateTime.Now;
-            //Maybe not best to do now, but it should be right as long as people update things properly
 
             animal.AnimalShots.Add(shot);
         }
