@@ -174,9 +174,10 @@ namespace HumaneSociety
                     db.Employees.InsertOnSubmit(employee);
                     db.SubmitChanges();
                     break;
-                case "remove":
+                case "delete":
                     Employee empRemove = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).FirstOrDefault();
                     db.Employees.DeleteOnSubmit(empRemove);
+                    //This just tries to remove the employee. Need to remove the entire row and save the changes
                     db.SubmitChanges();
                     break;
                 case "update":
@@ -184,8 +185,10 @@ namespace HumaneSociety
                     db.Employees.InsertOnSubmit(empUpdate);
                     db.SubmitChanges();
                     break;
-                case "display":
-                    db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber);
+                case "read":
+                    Employee tempEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).FirstOrDefault();
+                    Console.WriteLine($"First Name: {tempEmployee.FirstName}, Last Name: {tempEmployee.LastName}, Employee ID: {tempEmployee.EmployeeId}, Employee Email: {tempEmployee.Email}");
+                    Console.ReadLine();
                     break;
             }
         }
