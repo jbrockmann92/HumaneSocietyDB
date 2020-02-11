@@ -177,7 +177,6 @@ namespace HumaneSociety
                 case "delete":
                     Employee empRemove = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).FirstOrDefault();
                     db.Employees.DeleteOnSubmit(empRemove);
-                    //This just tries to remove the employee. Need to remove the entire row and save the changes
                     db.SubmitChanges();
                     break;
                 case "update":
@@ -198,7 +197,6 @@ namespace HumaneSociety
         {
             db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
-            //Currently doesn't get gender, adoptionstatus, and employeeid, as required on the table. Is there a way to add them here?
         }
 
         internal static Animal GetAnimalByID(int id)
@@ -209,15 +207,15 @@ namespace HumaneSociety
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
-            List<Animal> animalUpdate = db.Animals.Where(a => a.AnimalId == animalId).ToList();
-            db.Animals.DeleteOnSubmit(animalUpdate[0]);
+            Animal animalUpdate = db.Animals.Where(a => a.AnimalId == animalId).FirstOrDefault();
+            db.Animals.DeleteOnSubmit(animalUpdate);
             db.SubmitChanges();
         }
 
         internal static void RemoveAnimal(Animal animal)
         {
-            List<Animal> animalRemove = db.Animals.Where(e => e.AnimalId == animal.AnimalId).ToList();
-            db.Animals.DeleteOnSubmit(animalRemove[0]);
+            Animal animalRemove = db.Animals.Where(e => e.AnimalId == animal.AnimalId).FirstOrDefault();
+            db.Animals.DeleteOnSubmit(animalRemove);
             db.SubmitChanges();
         }
         
@@ -264,12 +262,10 @@ namespace HumaneSociety
         {
             var animal = db.Animals.Where(a => a.Category.Name.Equals(categoryName)).FirstOrDefault();
             return animal.CategoryId.GetValueOrDefault();
-            //Rewrite if time
         }
         
         internal static Room GetRoom(int animalId)
         {
-            //Returns Room object when given an animal's id number
             var animalRoom = db.Rooms.Where(r => r.AnimalId.Equals(animalId)).FirstOrDefault();
             return animalRoom;
         }
@@ -311,15 +307,16 @@ namespace HumaneSociety
                         animal.AdoptionStatus = "Is adopted";
                     }
                 }
-                //A better way to do this? Some kind of LINQ statement?
+                RemoveAdoption(adoption.AnimalId, adoption.ClientId);
             }
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
         {
-            Adoption adoption = new Adoption();
             var adoptionToDelete = db.Adoptions.Where(a => a.AnimalId == animalId && a.ClientId == clientId).FirstOrDefault();
             db.Adoptions.DeleteOnSubmit(adoptionToDelete);
+            var animalToRemove = db.Animals.Where(a => a.AnimalId == animalId).FirstOrDefault();
+            db.Animals.DeleteOnSubmit(animalToRemove);
             db.SubmitChanges();
         }
 
@@ -339,10 +336,9 @@ namespace HumaneSociety
 
             animal.AnimalShots.Add(shot);
             db.SubmitChanges();
-            //Is this necessary after .Add()?
         }
 
-        internal static void AddAnimalsFromCSVFile()//Needs to take in the CSV file here probably
+        internal static void AddAnimalsFromCSVFile()
         {
             CSVOpener opener = new CSVOpener();
             List<Animal> animalList = opener.LoadCSV();
@@ -351,7 +347,6 @@ namespace HumaneSociety
                 db.Animals.InsertOnSubmit(animal);
                 db.SubmitChanges();
             }
-            //Might want to take in a csv file or something in the constructor??
         }
     }
 }
