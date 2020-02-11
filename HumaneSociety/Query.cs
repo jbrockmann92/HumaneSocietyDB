@@ -288,22 +288,40 @@ namespace HumaneSociety
             adoption.ApprovalStatus = "Not Adopted";
             adoption.AdoptionFee = 100;
             adoption.PaymentCollected = false;
+            db.Adoptions.InsertOnSubmit(adoption);
 
+            //I don't think I need to finalize the adoption here. Just get it into pending, then can approve using UpdateAdoption?
+            //This way of doing things may mean the program can only handle one adoption at a time though..
+            //Get it working, then make it better
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
-            throw new NotImplementedException();
+            var pendingAdoptions = db.Adoptions.Select(a => a);
+            return pendingAdoptions;
+            //That should be all eh?
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
-            throw new NotImplementedException();
+            //Is this where I want to make sense of what I did in the Adopt method?
+            //Ask if they've paid the adoption fee, then change the animal's status to adopted and remove from the table?
+            //They've already decided it's good to go and what adoption they're talking about. Just need to update status for animal and remove from tables
+
+            if (isAdopted)
+            {
+                //Need to update the client's adoption status, and maybe I don't want to remove the animal from the table, just update their adoption status, then change things to check 
+                //and make sure already adopted animals can't be adopted again?
+                db.Adoptions.DeleteOnSubmit(adoption);
+
+            }
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
         {
-            throw new NotImplementedException();
+            Adoption adoption = new Adoption();
+            var adoptionToDelete = db.Adoptions.Where(a => a.AnimalId == animalId && a.ClientId == clientId).FirstOrDefault();
+            db.Adoptions.DeleteOnSubmit(adoptionToDelete);
         }
 
         // TODO: Shots Stuff
