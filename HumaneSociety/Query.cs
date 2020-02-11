@@ -224,28 +224,28 @@ namespace HumaneSociety
                 switch (pair.Key)
                 {
                     case 1:
-                        matchingAnimals.RemoveAll(a => a.Category.Name != pair.Value);
+                        matchingAnimals.RemoveAll(a => a.Category.Name != pair.Value && a.Category.Name != pair.Value.ToLower());
                         break;
                     case 2:
-                        matchingAnimals.RemoveAll(a => a.Name.ToString() != pair.Value);
+                        matchingAnimals.RemoveAll(a => a.Name != pair.Value && a.Name != pair.Value.ToLower());
                         break;
                     case 3:
-                        matchingAnimals.RemoveAll(a => a.Age.ToString() != pair.Value);
+                        matchingAnimals.RemoveAll(a => a.Age.ToString() != pair.Value && a.Age.ToString() != pair.Value.ToLower());
                         break;
                     case 4:
-                        matchingAnimals.RemoveAll(a => a.Demeanor.ToString() != pair.Value);
+                        matchingAnimals.RemoveAll(a => a.Demeanor != pair.Value && a.Demeanor != pair.Value.ToLower());
                         break;
                     case 5:
-                        matchingAnimals.RemoveAll(a => a.KidFriendly.ToString() != pair.Value);
+                        matchingAnimals.RemoveAll(a => a.KidFriendly.ToString() != pair.Value && a.KidFriendly.ToString() != pair.Value.ToLower());
                         break;
                     case 6:
-                        matchingAnimals.RemoveAll(a => a.PetFriendly.ToString() != pair.Value);
+                        matchingAnimals.RemoveAll(a => a.PetFriendly.ToString() != pair.Value && a.PetFriendly.ToString() != pair.Value.ToLower());
                         break;
                     case 7:
-                        matchingAnimals.RemoveAll(a => a.Weight.ToString() != pair.Value);
+                        matchingAnimals.RemoveAll(a => a.Weight.ToString() != pair.Value && a.Weight.ToString() != pair.Value.ToLower());
                         break;
                     case 8:
-                        matchingAnimals.RemoveAll(a => a.AnimalId.ToString() != pair.Value);
+                        matchingAnimals.RemoveAll(a => a.AnimalId.ToString() != pair.Value && a.AnimalId.ToString() != pair.Value.ToLower());
                         break;
                 }
             }
