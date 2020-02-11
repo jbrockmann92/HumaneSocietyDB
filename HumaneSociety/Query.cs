@@ -341,7 +341,14 @@ namespace HumaneSociety
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
-            throw new NotImplementedException();
+            //Take shot name, take animal. Update animal's shots based on shotName
+            AnimalShot shot = new AnimalShot();
+            shot.AnimalId = animal.AnimalId;
+            shot.ShotId = db.Shots.Where(s => s.Name == shotName).FirstOrDefault().ShotId;
+            shot.DateReceived = DateTime.Now;
+            //Maybe not best to do now, but it should be right as long as people update things properly
+
+            animal.AnimalShots.Add(shot);
         }
     }
 }
