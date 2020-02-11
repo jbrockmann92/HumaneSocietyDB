@@ -285,17 +285,26 @@ namespace HumaneSociety
             adoption.ApprovalStatus = "Not Adopted";
             adoption.AdoptionFee = 100;
             adoption.PaymentCollected = false;
+            db.Adoptions.InsertOnSubmit(adoption);
 
+            //I don't think I need to finalize the adoption here. Just get it into pending, then can approve using UpdateAdoption?
+            //This way of doing things may mean the program can only handle one adoption at a time though..
+            //Get it working, then make it better
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
-            throw new NotImplementedException();
+            var pendingAdoptions = db.Adoptions.Select(a => a);
+            return pendingAdoptions;
+            //That should be all eh?
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
-            throw new NotImplementedException();
+            //Is this where I want to make sense of what I did in the Adopt method?
+            //Ask if they've paid the adoption fee, then change the animal's status to adopted and remove from the table?
+
+
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
