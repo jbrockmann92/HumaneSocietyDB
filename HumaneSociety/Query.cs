@@ -340,8 +340,11 @@ namespace HumaneSociety
             //Is this necessary after .Add()?
         }
 
-        internal static void AddAnimalsFromCSVFile()//Needs to take in the CSV file here probably
+        internal static void AddAnimalsFromCSVFile(List<List<string>> csvStrings)//Needs to take in the CSV file here probably
         {
+            CSVOpener opener = new CSVOpener();
+
+
             //Want to take a csv file that contains animal info and import all of their info into the program. Strightforward in theory
             //Need to import file, then assign each of the items, by commas, to variables of the animal, then add the animal to the db
             //Animal animal = new Animal();
